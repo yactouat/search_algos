@@ -124,4 +124,44 @@ describe('testing `getMidEl`', () => {
         expect(actual).toBe(expected);
     });
 
+    test('sort arrays sorts an array of numbers in ascending order by default', () => {
+        const expected = [
+            1,
+            2,
+            3
+        ];
+        const actual = sortArr([3,1,2]);
+        expect(actual).toEqual(expected);
+    });
+
+    test('sort arrays sorts an array of numbers in descending order when specified', () => {
+        const expected = [
+            3,
+            2,
+            1
+        ];
+        const actual = sortArr([3,1,2], 'DESC');
+        expect(actual).toEqual(expected);
+    });
+
+    test('sort arrays sorts an array of strings in ascending order by default', () => {
+        const expected = [
+            'x',
+            'y',
+            'z'
+        ];
+        const actual = sortArr(['z', 'y', 'x']);
+        expect(actual).toEqual(expected);
+    });
+
+    test('sort arrays sorts an array of strings in descending order when specified', () => {
+        const expected = [
+            'z',
+            'y',
+            'x'
+        ];
+        const actual = sortArr(['y', 'z', 'x'], 'DESC');
+        expect(actual).toEqual(expected);
+    });
+
 });

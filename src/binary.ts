@@ -39,18 +39,22 @@ export const getMidElIdx = (leftIdx: number, rightIdx: number): number => {
  * 
  * takes an input array and returns it sorted
  * 
- * TODO sort other data types than numbers
- * 
  * @param  {Array<unknown>} arr the array of values to sort
  * @returns Array the sorted array
  */
- export const sortArr = (arr: Array<number>): Array<number> => {
+ export const sortArr = (arr: Array<any>, sortOrder: SortOrder = 'ASC'): Array<number> => {
     const sortedArr = arr;
-    sortedArr.sort((a: number, b:number): number => {
-        if (typeof a === 'number' && typeof b === 'number') {
-            return a - b;
+    if (arr.every(el => typeof el === 'number')) {
+        sortedArr.sort((a, b) => {
+            return sortOrder === 'ASC' ? a - b : b - a;
+        });
+    } else if (arr.every(el => typeof el === 'string')) {
+        sortedArr.sort();
+        if (sortOrder === 'DESC') {
+            sortedArr.reverse();
         }
-        return 0;
-    });
+    }
     return sortedArr;
 }
+
+type SortOrder = 'ASC' | 'DESC';
