@@ -1,4 +1,3 @@
-import Node from "./node";
 import SinglyLinkedList, { EqualityComparator } from "./singly-linked-list";
 
 /**
@@ -76,7 +75,7 @@ export default class Graph<T> {
      */
     dfs(nodeData: T, stack: T[] = [], visited: T[] = []): T[] {
         // initializing the stack of adjacent nodes to visit from the source node data
-        stack = this.getDFSStackFromSrcNode(nodeData, stack);
+        stack = this.getDFSStackFromSrcNode(nodeData);
         // pushing the src node data to the visited nodes array if not already visited
         if (!visited.includes(nodeData)) {
             visited.push(nodeData);
@@ -87,15 +86,11 @@ export default class Graph<T> {
         while (nextNodeData) {
             if (!visited.includes(nextNodeData)) {
                 // remove duplicates from the visited and stack arrays with Sets as recursion may keep duplicates
-                stack = [...new Set(stack.concat(this.getDFSStackFromSrcNode(
-                    nextNodeData, 
-                    [...new Set(stack)]
-                )))];
                 visited = [...new Set(visited.concat(
                     this.dfs(
                         nextNodeData, 
                         stack, 
-                        [...new Set(visited)]
+                        visited
                     ))
                 )];
             }
@@ -103,7 +98,6 @@ export default class Graph<T> {
             nextNodeData = stack.pop();
         }
         return visited;
-
     }
 
     /**
