@@ -66,7 +66,9 @@ export default class Graph<T> {
 
     /**
      * 
-     * performs a depth-first search of the graph from a node's data
+     * performs a depth-first search of the graph from a root node's data
+     * 
+     * no target is specified here, so the search will be performed on the entire graph
      * 
      * @param {T} nodeData
      * @param {T[]} stack
@@ -148,7 +150,5 @@ export default class Graph<T> {
         });
         return stack;
     }
-
-    // TODO test finding a set of nodes that satisfy a condition
 
 }

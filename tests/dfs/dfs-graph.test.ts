@@ -1,4 +1,4 @@
-import Graph from '../../src/dfs/dfs-graph';
+import Graph from '../../src/dfs/graph';
 import Node from '../../src/dfs/node';
 import SinglyLinkedList from '../../src/dfs/singly-linked-list';
 
@@ -146,23 +146,6 @@ describe('testing `Graph` class', () => {
         graph.addEdge(3, 0);
         graph.addEdge(4, 2);
         const actual = graph.dfs(0).sort();
-        expect(actual).toEqual(expected);
-    });
-
-    test('depth-first search from any node\'s data', () => {
-        const expected = [0, 1, 2, 3, 4];
-        const graph = new Graph(5);
-        graph.addEdge(0, 1);
-        graph.addEdge(0, 2);
-        graph.addEdge(0, 3);
-        graph.addEdge(1, 0);
-        graph.addEdge(1, 2);
-        graph.addEdge(2, 0);
-        graph.addEdge(2, 1);
-        graph.addEdge(2, 4);
-        graph.addEdge(3, 0);
-        graph.addEdge(4, 2);
-        const actual = graph.dfs(2).sort();
         expect(actual).toEqual(expected);
     });
 
