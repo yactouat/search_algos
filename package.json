@@ -4,6 +4,8 @@
   "description": "utilities for classical search algorithms",
   "main": "index.js",
   "scripts": {
+    "build": "tsc",
+    "clear-test-cache": "jest --clearCache",
     "test": "jest"
   },
   "author": "yactouat",
