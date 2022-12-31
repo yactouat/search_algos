@@ -67,61 +67,53 @@ export default class Graph<T> {
 
     /**
      * 
-     * TODO: refactor this method
+     * performs a depth-first search of the graph from a node's data
      * 
-     * performs a depth-first search of the graph from a given node
-     * 
-     * @param  {T} startNode from which node to start the search
+     * @param {T} nodeData
+     * @param {T[]} stack
+     * @param {T[]} visited
      * @returns {T[]} returns an array of visited vertices
      */
-    dfs(startNode: T): T[] {
-        // initialize the stack and visited arrays
-        const stack: T[] = [];
-        let visited: T[] = [];
-        // get the adjacency list of the start vertex
-        let adjacencyList = null;
-        if (
-            typeof this._vertices === 'number' 
-            && typeof startNode === 'number' 
-            && this._adjacencyLists[startNode]
-        ) {
-            adjacencyList = this._adjacencyLists[startNode];
-        } else if ( Array.isArray(this._vertices)) {
-            adjacencyList = this._adjacencyLists.find((list) => {
-                return list.head && list.head.data === startNode;
-            });
+    dfs(nodeData: T, stack: T[] = [], visited: T[] = []): T[] {
+        // initializing the stack of adjacent nodes to visit from the source node data
+        stack = this.getDFSStackFromSrcNode(nodeData, stack);
+        // pushing the src node data to the visited nodes array if not already visited
+        if (!visited.includes(nodeData)) {
+            visited.push(nodeData);
         }
-        /**
-         * push `startNode` to the visited array,
-         * if exists in the adjacency list,
-         * and is not already in the visited array
-         */
-        if (adjacencyList && !visited.includes(startNode)) {
-            visited.push(startNode);
-        }
-        // get all the nodes of the start vertex adjacency list
-        const nodes = adjacencyList ? adjacencyList.getAllListNodes() : [];
-        /**
-         * push all the nodes of the start vertex adjacency list to the stack of nodes to visit,
-         * if they have not been visited yet and are not already in the stack
-         */
-        nodes.forEach((node) => {
-            if (!visited.includes(node.data) && !stack.includes(node.data)) {
-                stack.push(node.data);
+        // getting the next node data to visit from the stack
+        let nextNodeData = stack.pop();
+        // repeating the process with the next stack item until the stack is empty
+        while (nextNodeData) {
+            if (!visited.includes(nextNodeData)) {
+                // remove duplicates from the visited and stack arrays with Sets as recursion may keep duplicates
+                stack = [...new Set(stack.concat(this.getDFSStackFromSrcNode(
+                    nextNodeData, 
+                    [...new Set(stack)]
+                )))];
+                visited = [...new Set(visited.concat(
+                    this.dfs(
+                        nextNodeData, 
+                        stack, 
+                        [...new Set(visited)]
+                    ))
+                )];
             }
-        });
+            // allowing the next node data from the stack to be visited in the next iteration
+            nextNodeData = stack.pop();
+        }
         return visited;
+
     }
 
     /**
      * 
-     * derives the stack of nodes to visit from a given source node data
+     * gets the adjacency list of the graph with a given source node data as input
      * 
      * @param {T} srcNodeData
-     * @param {T[]} stack of nodes data or empty array if none
-     * @returns {T[]}
+     * @returns {SinglyLinkedList<T>|null}
      * */
-    public getDFSStackFromSrcNode(srcNodeData: T, stack: T[] = []): T[] {
+    public getAdjacencyListFromSrcNode(srcNodeData: T): SinglyLinkedList<T> | null {
         // get the adjacency list of the src node
         let adjacencyList = null;
         if (
@@ -135,6 +127,20 @@ export default class Graph<T> {
                 return list.head && list.head.data === srcNodeData;
             });
         }
+        return !adjacencyList ? null : adjacencyList;
+    }
+
+    /**
+     * 
+     * derives the stack of nodes to visit from a given source node data
+     * 
+     * @param {T} srcNodeData
+     * @param {T[]} stack of nodes data or empty array if none
+     * @returns {T[]} returns a stack of items to visit
+     * */
+    public getDFSStackFromSrcNode(srcNodeData: T, stack: T[] = []): T[] {
+        // get the adjacency list of the src node
+        const adjacencyList = this.getAdjacencyListFromSrcNode(srcNodeData);
         // get all the nodes of the src node adjacency list
         const nodes = adjacencyList ? adjacencyList.getAllListNodes() : [];
         /**

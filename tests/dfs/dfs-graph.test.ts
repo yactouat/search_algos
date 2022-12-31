@@ -41,6 +41,16 @@ describe('testing `Graph` class', () => {
         expect(actual.sort()).toEqual(expected);
     });
 
+    test('fill stack from existing source node with an empty stack materialized as an empty array', () => {
+        const expected = [1, 3, 4];
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 3);
+        graph.addEdge(0, 4);
+        const actual = graph.getDFSStackFromSrcNode(0, []);
+        expect(actual.sort()).toEqual(expected);
+    });
+
     test('fill stack from existing source node with pre filled stack', () => {
         const expected = [1, 3, 4];
         const graph = new Graph(5);
@@ -68,23 +78,39 @@ describe('testing `Graph` class', () => {
         graph.addEdge(0, 3);
         graph.addEdge(0, 4);
         const actual = graph.getDFSStackFromSrcNode(9, expected);
-        expect(actual).toEqual(expected);
+        expect(actual.sort()).toEqual(expected);
     });
 
-    // test('depth-first search from first vertex', () => {
-    //     const expected = [0, 1, 2, 3, 4];
-    //     const actual = new Graph(5);
-    //     actual.addEdge(0, 1);
-    //     actual.addEdge(0, 2);
-    //     actual.addEdge(0, 3);
-    //     actual.addEdge(1, 0);
-    //     actual.addEdge(1, 2);
-    //     actual.addEdge(2, 0);
-    //     actual.addEdge(2, 1);
-    //     actual.addEdge(2, 4);
-    //     actual.addEdge(3, 0);
-    //     actual.dfs(0);
-    //     expect(actual.visited.sort()).toEqual(expected);
-    // });
+    test('depth-first search from root node data', () => {
+        const expected = [0, 1, 2, 3, 4];
+        const actual = new Graph(5);
+        actual.addEdge(0, 1);
+        actual.addEdge(0, 2);
+        actual.addEdge(0, 3);
+        actual.addEdge(1, 0);
+        actual.addEdge(1, 2);
+        actual.addEdge(2, 0);
+        actual.addEdge(2, 1);
+        actual.addEdge(2, 4);
+        actual.addEdge(3, 0);
+        actual.dfs(0);
+        expect(actual.dfs(0).sort()).toEqual(expected);
+    });
+
+    test('depth-first search from any node\'s data', () => {
+        const expected = [0, 1, 2, 3, 4];
+        const actual = new Graph(5);
+        actual.addEdge(0, 1);
+        actual.addEdge(0, 2);
+        actual.addEdge(0, 3);
+        actual.addEdge(1, 0);
+        actual.addEdge(1, 2);
+        actual.addEdge(2, 0);
+        actual.addEdge(2, 1);
+        actual.addEdge(2, 4);
+        actual.addEdge(3, 0);
+        actual.dfs(0);
+        expect(actual.dfs(2).sort()).toEqual(expected);
+    });
 
 });
