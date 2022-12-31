@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 // node and linked list classes taken from https://ricardoborges.dev/data-structures-in-typescript-linked-list
 const node_1 = __importDefault(require("./node"));
-// TODO test singly linked list
 class SinglyLinkedList {
     /**
      *
@@ -71,6 +70,21 @@ class SinglyLinkedList {
                 current = current.next;
             }
         }
+    }
+    /**
+     *
+     * gets all the nodes in the list
+     *
+     * @returns {Node<T>[]}
+     */
+    getAllListNodes() {
+        const nodes = [];
+        let current = this._head;
+        while (current) {
+            nodes.push(current);
+            current = current.next;
+        }
+        return nodes;
     }
     /**
      *

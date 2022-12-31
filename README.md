@@ -24,7 +24,7 @@ The domain of this repo is to provide a collection of these search algorithms:
 
 ### build
 
-```tsc``` => compiles the code and puts it in the `dist` folder with the setting `es2016` as target.
+```npm run build``` => compiles the code and puts it in the `dist` folder with the setting `es2016` as target.
 
 ### test
 

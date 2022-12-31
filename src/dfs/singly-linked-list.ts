@@ -1,7 +1,8 @@
 // node and linked list classes taken from https://ricardoborges.dev/data-structures-in-typescript-linked-list
 import Node from "./node";
 
-// TODO test singly linked list
+export type EqualityComparator<T> = (a: T, b: T) => boolean;
+
 export default class SinglyLinkedList<T> {
   /**
    *
@@ -10,7 +11,7 @@ export default class SinglyLinkedList<T> {
    * @param  {(a:T, b:T) => boolean} equalityComparator
    */
   constructor(
-    public equalityComparator: (a: T, b: T) => boolean,
+    public equalityComparator: EqualityComparator<T>,
     private _head: Node<T> | null = null
   ) {}
 
@@ -67,6 +68,22 @@ export default class SinglyLinkedList<T> {
         current = current.next;
       }
     }
+  }
+
+  /**
+   * 
+   * gets all the nodes in the list
+   * 
+   * @returns {Node<T>[]} 
+   */
+  getAllListNodes(): Node<T>[] {
+    const nodes: Node<T>[] = [];
+    let current = this._head;
+    while (current) {
+      nodes.push(current);
+      current = current.next;
+    }
+    return nodes;
   }
 
   /**

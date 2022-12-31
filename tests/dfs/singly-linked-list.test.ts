@@ -93,4 +93,13 @@ describe('testing `SinglyLinkedList` class', () => {
         expect(actual.search('bar')?.data).toEqual(expected);
     });
 
+    test('get all list nodes returns correct list', () => {
+        const expected = ['foo', 'bar', 'baz'];
+        const list = new SinglyLinkedList<string>((a, b) => a === b, new Node('foo'));
+        list.append('bar');
+        list.append('baz');
+        const actual = list.getAllListNodes().map(node => node.data);
+        expect(actual).toEqual(expected);
+    });
+
 });
