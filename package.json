@@ -4,6 +4,7 @@
   "description": "utilities for classical search algorithms",
   "main": "index.js",
   "scripts": {
+    "clear-test-cache": "jest --clearCache",
     "test": "jest"
   },
   "author": "yactouat",
