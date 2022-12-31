@@ -81,36 +81,89 @@ describe('testing `Graph` class', () => {
         expect(actual.sort()).toEqual(expected);
     });
 
+    test('fill stack from any source node with an empty stack', () => {
+        const expected = [0,1,4];
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(0, 3);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 0);
+        graph.addEdge(4, 2);
+        const actual = graph.getDFSStackFromSrcNode(2);
+        expect(actual.sort()).toEqual(expected);
+    });
+
+    test('fill stack from leaf node with an empty stack', () => {
+        const expected = [0];
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(0, 3);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 0);
+        graph.addEdge(4, 2);
+        const actual = graph.getDFSStackFromSrcNode(3);
+        expect(actual.sort()).toEqual(expected);
+    });
+
+    test('fill stack from leaf node with an empty stack', () => {
+        const expected = [2];
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(0, 3);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 0);
+        graph.addEdge(4, 2);
+        const actual = graph.getDFSStackFromSrcNode(4);
+        expect(actual.sort()).toEqual(expected);
+    });
+
     test('depth-first search from root node data', () => {
         const expected = [0, 1, 2, 3, 4];
-        const actual = new Graph(5);
-        actual.addEdge(0, 1);
-        actual.addEdge(0, 2);
-        actual.addEdge(0, 3);
-        actual.addEdge(1, 0);
-        actual.addEdge(1, 2);
-        actual.addEdge(2, 0);
-        actual.addEdge(2, 1);
-        actual.addEdge(2, 4);
-        actual.addEdge(3, 0);
-        actual.dfs(0);
-        expect(actual.dfs(0).sort()).toEqual(expected);
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(0, 3);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 0);
+        graph.addEdge(4, 2);
+        const actual = graph.dfs(0).sort();
+        expect(actual).toEqual(expected);
     });
 
     test('depth-first search from any node\'s data', () => {
         const expected = [0, 1, 2, 3, 4];
-        const actual = new Graph(5);
-        actual.addEdge(0, 1);
-        actual.addEdge(0, 2);
-        actual.addEdge(0, 3);
-        actual.addEdge(1, 0);
-        actual.addEdge(1, 2);
-        actual.addEdge(2, 0);
-        actual.addEdge(2, 1);
-        actual.addEdge(2, 4);
-        actual.addEdge(3, 0);
-        actual.dfs(0);
-        expect(actual.dfs(2).sort()).toEqual(expected);
+        const graph = new Graph(5);
+        graph.addEdge(0, 1);
+        graph.addEdge(0, 2);
+        graph.addEdge(0, 3);
+        graph.addEdge(1, 0);
+        graph.addEdge(1, 2);
+        graph.addEdge(2, 0);
+        graph.addEdge(2, 1);
+        graph.addEdge(2, 4);
+        graph.addEdge(3, 0);
+        graph.addEdge(4, 2);
+        const actual = graph.dfs(2).sort();
+        expect(actual).toEqual(expected);
     });
 
 });
