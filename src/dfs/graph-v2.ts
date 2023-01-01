@@ -1,11 +1,11 @@
 import Node from "./node-v2";
 
 /**
- * generic representation of how an edge should be stored in the edge list
+ * generic representation of how an edge should be stored in a graph's edge list
  *
  * weight is optional and can be of any type
  */
-interface EdgeListEntry<T> {
+export interface EdgeListEntry<T> {
   v: number;
   u: number;
   w?: T;
@@ -18,11 +18,6 @@ interface EdgeListEntry<T> {
  */
 export default class Graph<T> {
   /**
-   * stores the edges of the graph in a simple list
-   * */
-  private _edgeList: EdgeListEntry<T>[] = [];
-
-  /**
    * stores the vertices in a map with their corresponding identifying numbers
    */
   private _verticesIdsMap: Map<Node<T>, number> = new Map();
@@ -31,12 +26,11 @@ export default class Graph<T> {
    *
    * initializes a graph with a collection of nodes
    *
-   * maps each node to an identifying number,
-   * TODO pushes each node's edges to the edge list
+   * maps each node to an identifying number
    *
    * @param nodesCollection
    */
-  constructor(nodesCollection: Node<T>[]) {
+  constructor(nodesCollection: Node<T>[] = []) {
     this._setVerticesIdsMap(nodesCollection);
   }
 
@@ -49,9 +43,6 @@ export default class Graph<T> {
   get verticesIdsMap(): Map<Node<T>, number> {
     return this._verticesIdsMap;
   }
-
-  // TODO push each vertex edge to the edge list
-  // TODO: implement a simple edge list like so => [ [0,1], [0,6], [0,8], [1,4], [1,6], [1,9], [2,4], [2,6], [3,4], [3,5], [3,8], [4,5], [4,9], [7,8], [7,9] ]
 
   /**
    * @private
@@ -93,6 +84,115 @@ export default class Graph<T> {
         });
       }
     });
+  }
+
+  /**
+   *
+   * adds a single node to the graph's collection
+   *
+   * @param  {Node<T>} node
+   * @returns void
+   */
+  addNodeToGraph(node: Node<T>): void {
+    this._setVerticesIdsMap([node]);
+  }
+
+  /**
+   *
+   * adds several nodes to the graph's collection
+   *
+   * @param  {Node<T>[]} nodes
+   * @returns void
+   */
+  addNodesToGraph(nodes: Node<T>[]): void {
+    this._setVerticesIdsMap(nodes);
+  }
+
+  /**
+   *  gets all the edges of the graph in a simple list representation
+   *
+   * an example edge list would look like so => [ [0,1], [0,6], [0,8], [1,4], [1,6], [1,9] ]
+   *
+   * @returns {EdgeListEntry<T>[]}
+   */
+  getEdgeListRepr(): EdgeListEntry<T>[] {
+    const edgeList: EdgeListEntry<T>[] = [];
+    for (const [node, id] of this._verticesIdsMap) {
+      if (node.pointsTo) {
+        node.pointsTo.forEach((pointedNode) => {
+          edgeList.push({
+            v: id,
+            u: this._verticesIdsMap.get(pointedNode) as number,
+          });
+          // push the reciprocal edge since its an undirected graph by default
+          edgeList.push({
+            v: this._verticesIdsMap.get(pointedNode) as number,
+            u: id,
+          });
+        });
+      }
+    }
+    // return a sorted edge list for convenience since its a common practice
+    return edgeList.sort((a, b) => a.v - b.v);
+  }
+
+  /**
+   *
+   * TODO test this method
+   *
+   * updates the graph's vertices ids map with an input edge list
+   *
+   * ! destroys the previous graph's state
+   * also, updating the edge list does not update each node's data, only their pointers;
+   * this means that listed nodes must be already present in the graph's collection,
+   * this also means that existing nodes that are not listed in the edge list will be deleted
+   *
+   * @param  {EdgeListEntry<T>[]} edgeList
+   * @returns void
+   */
+  updateVerticesIdMapWithEdgeList(edgeList: EdgeListEntry<T>[]): void {
+    // we extract each unique vertex id from the edge list
+    const uniqueVerticesIds: number[] = [];
+    edgeList.forEach((edge) => {
+      if (!uniqueVerticesIds.includes(edge.v)) {
+        uniqueVerticesIds.push(edge.v);
+      }
+      if (!uniqueVerticesIds.includes(edge.u)) {
+        uniqueVerticesIds.push(edge.u);
+      }
+    });
+    // we initialize an inversed map of vertices ids
+    const newNodesMap: Map<number, Node<T>> = new Map();
+    // we check if these ids exist in the current map
+    for (const [node, id] of this._verticesIdsMap) {
+      if (!uniqueVerticesIds.includes(id)) {
+        // we delete previous nodes from the existing map if they dont exist in the new edge list
+        this._verticesIdsMap.delete(node);
+      } else {
+        // we reset the pointer of the corresponding nodes to an empty array
+        node.pointsTo = [];
+        // we add the corresponding v and u nodes to the inversed map
+        newNodesMap.set(id, node);
+      }
+    }
+    // now we can iterate over the edge list and update the inversed map easily
+    edgeList.forEach((edge) => {
+      // we get the corresponding v and u node from the inversed map with the edge's v id
+      const vNode = newNodesMap.get(edge.v) as Node<T>;
+      const uNode = newNodesMap.get(edge.u) as Node<T>;
+      // we set the v node's pointer to the u node
+      const vNodePreviousPointedNodes = vNode.pointsTo ? vNode.pointsTo : [];
+      vNode.pointsTo = [...vNodePreviousPointedNodes, uNode];
+      // we update the inversed map with the updated v node
+      newNodesMap.set(edge.v, vNode);
+    });
+    // we extract a collection of nodes from the inversed map
+    const newNodesCollection: Node<T>[] = [];
+    for (const [id, node] of newNodesMap) {
+      newNodesCollection.push(node);
+    }
+    // we update the graph's vertices ids map with the new collection
+    this._setVerticesIdsMap(newNodesCollection);
   }
 
   // TODO: implement an adjacency matrix, an adjacency matrix can be represented like so =>
