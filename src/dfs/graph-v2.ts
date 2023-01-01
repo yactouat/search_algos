@@ -29,6 +29,19 @@ export default class Graph<T> {
 
   /**
    *
+   * initializes a graph with a collection of nodes
+   *
+   * maps each node to an identifying number,
+   * TODO pushes each node's edges to the edge list
+   *
+   * @param nodesCollection
+   */
+  constructor(nodesCollection: Node<T>[]) {
+    this._setVerticesIdsMap(nodesCollection);
+  }
+
+  /**
+   *
    * get the nodes/ids mapping
    *
    * @returns Map
@@ -36,6 +49,9 @@ export default class Graph<T> {
   get verticesIdsMap(): Map<Node<T>, number> {
     return this._verticesIdsMap;
   }
+
+  // TODO push each vertex edge to the edge list
+  // TODO: implement a simple edge list like so => [ [0,1], [0,6], [0,8], [1,4], [1,6], [1,9], [2,4], [2,6], [3,4], [3,5], [3,8], [4,5], [4,9], [7,8], [7,9] ]
 
   /**
    * @private
@@ -66,7 +82,7 @@ export default class Graph<T> {
    *
    * @param  {Node<T>[]} nodesCollection
    */
-  setVerticesIdsMap(nodesCollection: Node<T>[]) {
+  private _setVerticesIdsMap(nodesCollection: Node<T>[]) {
     nodesCollection.forEach((node) => {
       this._mapNode(node, this._getNextIdToStoreInMap());
       // if iterated node has pointer(s)
@@ -78,10 +94,6 @@ export default class Graph<T> {
       }
     });
   }
-
-  // TODO push each vertex edge to the edge list
-
-  // TODO: implement a simple edge list like so => [ [0,1], [0,6], [0,8], [1,4], [1,6], [1,9], [2,4], [2,6], [3,4], [3,5], [3,8], [4,5], [4,9], [7,8], [7,9] ]
 
   // TODO: implement an adjacency matrix, an adjacency matrix can be represented like so =>
   /**

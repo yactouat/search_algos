@@ -10,8 +10,7 @@ describe("test `Graph` class", () => {
     expected.set(FooNode, 1);
     expected.set(BarNode, 2);
     expected.set(BazNode, 3);
-    const actual = new Graph();
-    actual.setVerticesIdsMap([FooNode, BarNode, BazNode]);
+    const actual = new Graph([FooNode, BarNode, BazNode]);
     expect(actual.verticesIdsMap).toEqual(expected);
   });
 
@@ -24,8 +23,7 @@ describe("test `Graph` class", () => {
     expected.set(FooNode, 1);
     expected.set(BazNode, 2);
     expected.set(BarNode, 3);
-    const actual = new Graph();
-    actual.setVerticesIdsMap([FooNode, BarNode, BazNode]);
+    const actual = new Graph([FooNode, BarNode, BazNode]);
     expect(actual.verticesIdsMap.get(FooNode)).toEqual(1);
     expect(actual.verticesIdsMap.get(BazNode)).toEqual(2);
     expect(actual.verticesIdsMap.get(BarNode)).toEqual(3);
