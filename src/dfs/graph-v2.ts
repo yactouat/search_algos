@@ -138,6 +138,28 @@ export default class Graph<T> {
 
   /**
    *
+   * gets the unique ids of the graph's vertices from an input edge list elements
+   *
+   * this method considers v and u vertices
+   *
+   * @param  {EdgeListEntry<T>[]} edgeList
+   * @returns number
+   */
+  getUniqueIdsFromEdgeList(edgeList: EdgeListEntry<T>[]): number[] {
+    const uniqueVerticesIds: number[] = [];
+    edgeList.forEach((edge) => {
+      if (!uniqueVerticesIds.includes(edge.v)) {
+        uniqueVerticesIds.push(edge.v);
+      }
+      if (!uniqueVerticesIds.includes(edge.u)) {
+        uniqueVerticesIds.push(edge.u);
+      }
+    });
+    return uniqueVerticesIds.sort();
+  }
+
+  /**
+   *
    * TODO test this method
    *
    * updates the graph's vertices ids map with an input edge list
@@ -151,16 +173,8 @@ export default class Graph<T> {
    * @returns void
    */
   updateVerticesIdMapWithEdgeList(edgeList: EdgeListEntry<T>[]): void {
-    // we extract each unique vertex id from the edge list
-    const uniqueVerticesIds: number[] = [];
-    edgeList.forEach((edge) => {
-      if (!uniqueVerticesIds.includes(edge.v)) {
-        uniqueVerticesIds.push(edge.v);
-      }
-      if (!uniqueVerticesIds.includes(edge.u)) {
-        uniqueVerticesIds.push(edge.u);
-      }
-    });
+    // we extract each unique vertex id from the edge list to get a sorted list of ids
+    const uniqueVerticesIds = this.getUniqueIdsFromEdgeList(edgeList);
     // we initialize an inversed map of vertices ids
     const newNodesMap: Map<number, Node<T>> = new Map();
     // we check if these ids exist in the current map

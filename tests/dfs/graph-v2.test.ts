@@ -117,4 +117,21 @@ describe("test `Graph` class", () => {
     const actual = graph.getEdgeListRepr();
     expect(actual).toEqual(expected);
   });
+
+  test("getting unique ids from edge list", () => {
+    const inputEdgeList = [
+      { v: 1, u: 2 },
+      { v: 1, u: 3 },
+      { v: 1, u: 8 },
+      { v: 2, u: 1 },
+      { v: 2, u: 3 },
+      { v: 3, u: 1 },
+      { v: 3, u: 2 },
+      { v: 3, u: 6 },
+    ];
+    const expected = [1, 2, 3, 6, 8];
+    const graph = new Graph();
+    const actual = graph.getUniqueIdsFromEdgeList(inputEdgeList);
+    expect(actual).toEqual(expected);
+  });
 });
