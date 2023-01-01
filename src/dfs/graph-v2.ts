@@ -26,11 +26,16 @@ export default class Graph<T> {
    *
    * initializes a graph with a collection of nodes
    *
-   * maps each node to an identifying number
+   * maps each node to an identifying number,
+   * the graph is considered undirected by default
    *
-   * @param nodesCollection
+   * @param {Node<T>[] = []} nodesCollection
+   * @param {boolean = false} _isDirected
    */
-  constructor(nodesCollection: Node<T>[] = []) {
+  constructor(
+    nodesCollection: Node<T>[] = [],
+    private _isDirected: boolean = false
+  ) {
     this._setVerticesIdsMap(nodesCollection);
   }
 
@@ -124,11 +129,13 @@ export default class Graph<T> {
             v: id,
             u: this._verticesIdsMap.get(pointedNode) as number,
           });
-          // push the reciprocal edge since its an undirected graph by default
-          edgeList.push({
-            v: this._verticesIdsMap.get(pointedNode) as number,
-            u: id,
-          });
+          // push the reciprocal edge if undirected graph
+          if (!this._isDirected) {
+            edgeList.push({
+              v: this._verticesIdsMap.get(pointedNode) as number,
+              u: id,
+            });
+          }
         });
       }
     }
@@ -230,8 +237,6 @@ export default class Graph<T> {
   // TODO: get the vertex set V and the edge set E
 
   // TODO: add a method to add an edge
-
-  // TODO implement directional graphs
 
   // TODO: determine if a given edge is in the graph
 
