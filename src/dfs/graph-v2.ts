@@ -176,7 +176,7 @@ export default class Graph<T> {
     // we extract each unique vertex id from the edge list to get a sorted list of ids
     const uniqueVerticesIds = this.getUniqueIdsFromEdgeList(edgeList);
     // we initialize an inversed map of vertices ids
-    const newNodesMap: Map<number, Node<T>> = new Map();
+    const inversedVerticesIdMap: Map<number, Node<T>> = new Map();
     // we check if these ids exist in the current map
     for (const [node, id] of this._verticesIdsMap) {
       if (!uniqueVerticesIds.includes(id)) {
@@ -186,23 +186,23 @@ export default class Graph<T> {
         // we reset the pointer of the corresponding nodes to an empty array
         node.pointsTo = [];
         // we add the corresponding v and u nodes to the inversed map
-        newNodesMap.set(id, node);
+        inversedVerticesIdMap.set(id, node);
       }
     }
     // now we can iterate over the edge list and update the inversed map easily
     edgeList.forEach((edge) => {
-      // we get the corresponding v and u node from the inversed map with the edge's v id
-      const vNode = newNodesMap.get(edge.v) as Node<T>;
-      const uNode = newNodesMap.get(edge.u) as Node<T>;
+      // we get the corresponding v and u node from the inversed map with the edge's v and u ids
+      const vNode = inversedVerticesIdMap.get(edge.v) as Node<T>;
+      const uNode = inversedVerticesIdMap.get(edge.u) as Node<T>;
       // we set the v node's pointer to the u node
       const vNodePreviousPointedNodes = vNode.pointsTo ? vNode.pointsTo : [];
       vNode.pointsTo = [...vNodePreviousPointedNodes, uNode];
       // we update the inversed map with the updated v node
-      newNodesMap.set(edge.v, vNode);
+      inversedVerticesIdMap.set(edge.v, vNode);
     });
     // we extract a collection of nodes from the inversed map
     const newNodesCollection: Node<T>[] = [];
-    for (const [id, node] of newNodesMap) {
+    for (const [id, node] of inversedVerticesIdMap) {
       newNodesCollection.push(node);
     }
     // we update the graph's vertices ids map with the new collection
