@@ -42,6 +42,7 @@ A big thanks goes to the contributors of this project:
     <tr>
       <td align="center"><a href="https://github.com/yactouat"><img src="https://avatars.githubusercontent.com/u/37403808?v=4" width="100px;" alt="Yactouat"/><br /><sub><b>Yactouat</b></sub></a><br /><a href="https://github.com/yactouat"></td>
       <td align="center"><a href="https://github.com/ShashwatAgrawal20"><img src="https://avatars.githubusercontent.com/u/72117025?v=4" width="100px;" alt="Shashwat Agrawal"/><br /><sub><b>Shashwat Agrawal</b></sub></a><br /><a href="https://github.com/ShashwatAgrawal20"></td>
+      <td align="center"><a href="https://github.com/lynn109"><img src="https://github.com/lynn109.png" width="100px;" alt="Linnea Herzer"/><br /><sub><b>Linnea Herzer</b></sub></a><br /><a href="https://github.com/lynn109"></td>
     </tr>
   </tbody>
 </table>
